@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   mongodb:
-    image: mongo:6.0
+    image: mongo:4.4
     container_name: mongodb
     restart: always
     environment:
@@ -13,7 +13,7 @@ services:
     volumes:
       - mongodb_data:/data/db
     healthcheck:
-      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      test: ["CMD", "mongo", "--eval", "db.adminCommand('ping')"]
       interval: 10s
       timeout: 5s
       retries: 3
@@ -24,9 +24,17 @@ services:
     ports:
       - "5020:5020"
     environment:
-      - MONGO_URI: mongodb://user:pass@mongodb:27017
-      - PORT: 5020
-      - NODE_ENV: production
+      - SMTP_HOST={SMTP_HOST}
+      - SMTP_PORT={SMTP_PORT}
+      - SMTP_USER={SMTP_USER}
+      - SMTP_PASS={SMTP_PASS}
+      - MONGODB_URI={MONGODB_URI}
+      - JWT_SECRET={JWT_SECRET}
+      - JWT_EXPIRES_IN={JWT_EXPIRES_IN}
+      - NODE_ENV={NODE_ENV}  
+      - BREVO_API_KEY={BREVO_API_KEY}
+      - BREVO_SENDER_EMAIL={BREVO_SENDER_EMAIL}
+      - MAILERSEND_API_KEY={MAILERSEND_API_KEY}
     depends_on:
       mongodb:
         condition: service_healthy
@@ -35,7 +43,7 @@ services:
     build:
       context: ./MailSending-Frontend
       args:
-        VITE_REACT_APP_BACKEND_BASEURL: https://mail-sending-backend.vercel.app/
+        VITE_REACT_APP_BACKEND_BASEURL: https://mail-sending-backend.vercel.app
         # VITE_BASE_URL:  http://localhost:3020
     ports:
       - "3020:82"
