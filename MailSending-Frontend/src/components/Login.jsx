@@ -47,7 +47,7 @@ const Login = () => {
     setLoading(true);
     setError('');
     try {
-      const response = await fetch('https://mail-sending-backend.vercel.app/api/auth/forgot-password', {
+      const response = await fetch(`${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL}/api/auth/forgot-password`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email }),
@@ -71,7 +71,7 @@ const Login = () => {
     setLoading(true);
     setError('');
     try {
-      const response = await fetch('https://mail-sending-backend.vercel.app/api/auth/verify-reset-otp', {
+      const response = await fetch(`${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL}/api/auth/verify-reset-otp`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, otp }),
@@ -102,7 +102,7 @@ const Login = () => {
     }
 
     try {
-      const response = await fetch('https://mail-sending-backend.vercel.app/api/auth/reset-password', {
+      const response = await fetch(`${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL}/api/auth/reset-password`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, otp, newPassword }),
