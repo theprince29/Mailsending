@@ -24,14 +24,15 @@ services:
     ports:
       - "5020:5020"
     environment:
+      - PORT=5020
       - SMTP_HOST={SMTP_HOST}
       - SMTP_PORT={SMTP_PORT}
       - SMTP_USER={SMTP_USER}
       - SMTP_PASS={SMTP_PASS}
-      - MONGODB_URI={MONGODB_URI}
+      - MONGODB_URI=mongodb://user:pass@mongodb:27017
       - JWT_SECRET={JWT_SECRET}
       - JWT_EXPIRES_IN={JWT_EXPIRES_IN}
-      - NODE_ENV={NODE_ENV}  
+      - NODE_ENV={NODE_ENV}
       - BREVO_API_KEY={BREVO_API_KEY}
       - BREVO_SENDER_EMAIL={BREVO_SENDER_EMAIL}
       - MAILERSEND_API_KEY={MAILERSEND_API_KEY}
@@ -43,12 +44,24 @@ services:
     build:
       context: ./MailSending-Frontend
       args:
-        VITE_REACT_APP_BACKEND_BASEURL: https://mail-sending-backend.vercel.app
+         VITE_REACT_APP_BACKEND_BASEURL: https://api.blastinvo.info
+        #VITE_REACT_APP_BACKEND_BASEURL: https://mail-sending-backend.vercel.app
         # VITE_BASE_URL:  http://localhost:3020
     ports:
       - "3020:82"
     depends_on:
       - backend
+
+  admin:
+     build:
+       context: ./MailSending-Admin
+       args:
+         VITE_REACT_APP_BACKEND_BASEURL: https://api.blastinvo.info
+
+     ports:
+       - "3000:80"
+     depends_on:
+       - backend
 
 volumes:
   mongodb_data:
